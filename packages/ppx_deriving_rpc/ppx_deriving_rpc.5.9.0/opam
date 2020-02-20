@@ -1,56 +1,34 @@
 opam-version: "2.0"
+synopsis: "Ppx deriver for ocaml-rpc, a library to deal with RPCs in OCaml"
 maintainer: "thomas@gazagnaire.org"
 authors: "Thomas Gazagnaire, Jon Ludlam"
+tags: ["org:mirage" "org:xapi-project"]
 homepage: "https://github.com/mirage/ocaml-rpc"
-bug-reports: "https://github.com/mirage/ocaml-rpc/issues"
-dev-repo: "git+ssh://git@github.com/mirage/ocaml-rpc.git"
 doc: "https://mirage.github.io/ocaml-rpc/ppx_deriving_rpc"
-tags: [
-  "org:mirage"
-  "org:xapi-project"
-]
-build: [
-  ["jbuilder" "build" "-p" name "-j" jobs]
-  ["jbuilder" "runtest" "-p" name "-j" jobs] {with-test}
-]
+bug-reports: "https://github.com/mirage/ocaml-rpc/issues"
 depends: [
-  "ocaml" {>= "4.03.0" & < "4.08.0"}
-  "jbuilder"
-  "cppo" {build}
-  "rpclib" {= version}
+  "ocaml" {>= "4.04.0"}
+  "dune" {>= "1.5.0"}
+  "rpclib" {>= "5.0.0"}
   "rresult"
-  "ppx_deriving"
-  "ppx_tools"
-  "ppxfind"
-  "rpclib-lwt" {with-test & = version}
-  "rpclib-async" {with-test & = version}
+  "ppxlib" {< "0.9.0"}
+  "rpclib-lwt" {with-test & >= "5.0.0"}
+  "rpclib-async" {with-test & >= "5.0.0"}
   "lwt" {with-test & >= "3.0.0"}
-  "async" {with-test & < "v0.14"}
+  "async" {with-test}
   "alcotest" {with-test}
 ]
-synopsis: "ppx extension for rpclib"
+build: [
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
+dev-repo: "git://github.com/mirage/ocaml-rpc"
 description: """
-The library provides the `[@@deriving rpc]` ppx directly
-generates the conversion functions.
+`ocaml-rpc` is a library that provides remote procedure calls (RPC)
+using XML or JSON as transport encodings, and multiple generators
+for documentations, clients, servers, javascript bindings, python
+bindings, ...
 
-```ocaml
-type t = ... [@@deriving rpc]
-```
-
-will give two functions:
-
-* A function to convert values of type `t` to values of type `Rpc.t` :
-  `val rpc_of_t : t -> Rpc.t`
-
-* A function to convert values of type `Rpc.t` to values of type `t` :
-  `val t_of_rpc : Rpc.t -> (t,string) Result.result`
-
-It also supports the `@key` annotations for having different field names:
-
-```ocaml
-type t = { foo: int [@key "type"]; bar: int [@key "let"]; } [@@deriving rpc]
-```"""
-url {
-  src: "https://github.com/mirage/ocaml-rpc/archive/v5.9.0.tar.gz"
-  checksum: "md5=177db71621a7aa7a55cbea6c237eb6dc"
-}
+The transport mechanism itself is outside the scope of this library
+as all conversions are from and to strings.
+"""

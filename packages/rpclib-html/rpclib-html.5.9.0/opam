@@ -1,23 +1,19 @@
 opam-version: "2.0"
-synopsis: "A library to deal with RPCs in OCaml - Lwt interface"
+synopsis:
+  "A library to deal with RPCs in OCaml - html documentation generator"
 maintainer: "thomas@gazagnaire.org"
 authors: "Thomas Gazagnaire, Jon Ludlam"
 tags: ["org:mirage" "org:xapi-project"]
 homepage: "https://github.com/mirage/ocaml-rpc"
-doc: "https://mirage.github.io/ocaml-rpc/rpclib-lwt"
+doc: "https://mirage.github.io/ocaml-rpc/rpclib-html"
 bug-reports: "https://github.com/mirage/ocaml-rpc/issues"
 depends: [
   "ocaml"
-  "alcotest" {with-test}
   "dune" {>= "1.5.0"}
   "rpclib" {=version}
-  "lwt" {>= "3.0.0"}
-  "alcotest-lwt" {with-test}
+  "cow"
 ]
-build: [
-  ["dune" "build" "-p" name "-j" jobs]
-  ["dune" "runtest" "-p" name] {with-test}
-]
+build: ["dune" "build" "-p" name "-j" jobs]
 dev-repo: "git://github.com/mirage/ocaml-rpc"
 description: """
 `ocaml-rpc` is a library that provides remote procedure calls (RPC)

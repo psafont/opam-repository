@@ -1,22 +1,30 @@
 opam-version: "2.0"
-synopsis: "A library to deal with RPCs in OCaml - Lwt interface"
+synopsis: "A library to deal with RPCs in OCaml - meta-package"
 maintainer: "thomas@gazagnaire.org"
 authors: "Thomas Gazagnaire, Jon Ludlam"
 tags: ["org:mirage" "org:xapi-project"]
 homepage: "https://github.com/mirage/ocaml-rpc"
-doc: "https://mirage.github.io/ocaml-rpc/rpclib-lwt"
+doc: "https://mirage.github.io/ocaml-rpc/rpc"
 bug-reports: "https://github.com/mirage/ocaml-rpc/issues"
 depends: [
-  "ocaml"
-  "alcotest" {with-test}
+  "ocaml" {>= "4.04.0"}
   "dune" {>= "1.5.0"}
   "rpclib" {=version}
-  "lwt" {>= "3.0.0"}
+  "rpclib-async" {=version}
+  "rpclib-lwt" {=version}
+  "ppx_deriving_rpc" {=version}
+  "async" {>= "v0.9.0"}
+  "lwt"
+  "alcotest" {with-test}
   "alcotest-lwt" {with-test}
+  "md2mld" {with-doc & >= "0.3.0"}
+]
+conflicts: [
+  "core" {< "v0.9.0"}
 ]
 build: [
-  ["dune" "build" "-p" name "-j" jobs]
-  ["dune" "runtest" "-p" name] {with-test}
+    ["dune" "runtest" "-p" name] {with-test}
+    ["dune" "build" "@doc"] {with-doc}
 ]
 dev-repo: "git://github.com/mirage/ocaml-rpc"
 description: """
@@ -27,4 +35,6 @@ bindings, ...
 
 The transport mechanism itself is outside the scope of this library
 as all conversions are from and to strings.
+
+This is a dummy package installing the main library components.
 """
