@@ -1,0 +1,57 @@
+opam-version: "2.0"
+maintainer: "https://github.com/ocaml/opam-repository/issues"
+homepage: "https://gitlab.com/qemu-project/qemu/"
+bug-reports: "https://github.com/ocaml/opam-repository/issues"
+authors: "Fabrice Bellard and the QEMU team"
+license: "GPL-2.0-only"
+build: ["qemu-aarch64" "--version"]
+depexts: [
+  ["qemu-user"] {os-family = "debian"}
+  ["qemu-user"] {os-family = "ubuntu"}
+  ["qemu-img"] {os-family = "fedora"}
+  ["qemu-user"] {os-distribution = "rhel"}
+  ["epel-release" "qemu-img"] {os-distribution = "centos"}
+  ["qemu-aarch64"
+   "qemu-aarch64_be"
+   "qemu-alpha"
+   "qemu-arm"
+   "qemu-armeb"
+   "qemu-hexagon"
+   "qemu-hppa"
+   "qemu-i386"
+   "qemu-loongarch64"
+   "qemu-m68k"
+   "qemu-microblaze"
+   "qemu-microblazeel"
+   "qemu-mips"
+   "qemu-mips64"
+   "qemu-mips64el"
+   "qemu-mipsel"
+   "qemu-mipsn32"
+   "qemu-mipsn32el"
+   "qemu-or1k"
+   "qemu-ppc"
+   "qemu-ppc64"
+   "qemu-ppc64le"
+   "qemu-risv32"
+   "qemu-riscv64"
+   "qemu-s390x"
+   "qemu-sh4"
+   "qemu-sh4eb"
+   "qemu-sparc"
+   "qemu-sparc32plus"
+   "qemu-sparc64"
+   "qemu-x86_64"
+   "qemu-xtensa"
+   "qemu-xtensaeb"
+  ] {os-distribution = "alpine"}
+  ["qemu-linux-user"] {os-family = "suse" | os-family = "opensuse"}
+  ["qemu-user"] {os-distribution = "arch"}
+  ["qemu"] {os = "freebsd"}
+]
+
+available: os != "macos" & os != "win32"
+synopsis: "Virtual package relying on qemu user space emulators"
+description:
+  "This package can only install if the qeemu user space emulators is installed on the system."
+flags: conf
