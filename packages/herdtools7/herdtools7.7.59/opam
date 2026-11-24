@@ -1,0 +1,42 @@
+opam-version: "2.0"
+synopsis: "The herdtools suite for simulating and studying weak memory models"
+maintainer: "Luc Maranget <Luc.Maranget@inria.fr>"
+authors: [
+  "Luc Maranget <Luc.Maranget@inria.fr>"
+  "Jade Alglave <j.alglave@ucl.ac.uk>"
+]
+homepage: "https://diy.inria.fr/"
+bug-reports: "https://github.com/herd/herdtools7/issues/"
+doc: "https://diy.inria.fr/doc/index.html"
+dev-repo: "git+https://github.com/herd/herdtools7.git"
+license: "CECILL-B"
+build: [
+  ["cp" "%{herdtools7-asl-pseudocode:share}%/ISA_A64_xml_A_profile-2026-06.tar.gz"
+    "%{herdtools7-asl-pseudocode:share}%/SysReg_xml_A_profile_FAT-2026-06.tar.gz"
+    "%{herdtools7-asl-pseudocode:share}%/AARCHMRS_A_profile_FAT-2026-06.tar.gz" "herd/libdir/asl-pseudocode/"] {herdtools7-asl-pseudocode:installed}
+  [make "asl-pseudocode" "J=%{jobs}%"
+    "ISA_A64_SHA256=63a01a1696483bbe2edfef9e0f0cd053d6c1c619ec0587876cb7a60bb344f354"
+    "SYSREGS_SHA256=a2c13d741e608272db0cba36d651ac0401a3905ff70c2166f7b337c2274bf0e9"
+    "FEATURES_SHA256=c9a187b6a0da7674f1628bb10d0987ac3e83dffddab4f3aea92790b7b057fc67"
+  ] {herdtools7-asl-pseudocode:installed}
+  [make "build-release" "PREFIX=%{prefix}%" "J=%{jobs}%"]
+]
+install: [make "install-herdtools" "PREFIX=%{prefix}%"]
+# @todo Add "build-doc" field
+depends: [
+  "ocaml" {>= "4.14.0"}
+  "dune"  {>= "3.14.0" }
+  "menhir" {>= "20231231"}
+  "zarith" {>= "1.13"}
+  "aslref" {>= "1.0-EAC3"}
+  "conf-which"
+  "logs"
+  "conf-python-3" {>= "9.0.0"}
+  "conf-gcc" {with-test}
+]
+depopts: ["herdtools7-asl-pseudocode"]
+conflicts: ["ocaml-option-bytecode-only"]
+url {
+  src: "https://github.com/herd/herdtools7/archive/9e0dd2f8974c5dcb0330983db9766e8d0a62b3e8.tar.gz"
+  checksum: "sha256=1a1d09b79d1085ddaea792cb951eb7e3370adfe2a76eb4157bf7cd724d39cd7b"
+}

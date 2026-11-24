@@ -1,0 +1,63 @@
+opam-version: "2.0"
+synopsis: "Architecture Specification Language reference implementation"
+description: """
+Arm's reference implementation and documentation for the Architecture
+Specification Language (ASL).
+
+Provides parsing, type-checking, and interpretation of ASL, and other related
+tooling.
+
+For more details, and for a downloadable version of the ASL language reference
+document, please see
+https://developer.arm.com/Architectures/Architecture%20Specification%20Language
+"""
+maintainer: ["Arm Ltd - ATG Formal <atg-formal@arm.com>"]
+authors: ["Arm Ltd - ATG Formal <atg-formal@arm.com>"]
+license: "BSD-3-Clause"
+homepage: "https://github.com/herd/herdtools7"
+doc:
+  "https://developer.arm.com/Architectures/Architecture%20Specification%20Language"
+bug-reports: "https://github.com/herd/herdtools7/issues"
+depends: [
+  "ocaml" {>= "4.14"}
+  "dune" {>= "3.14"}
+  "menhir" {>= "20231231"}
+  "zarith" {>= "1.13"}
+  "yaml" {>= "3.2.0" & with-test}
+  "odoc" {with-doc}
+]
+depopts: [
+  "qcheck" {with-test}
+  "ocamlformat" {= "0.28.1" & with-dev-setup}
+  "zarith_stubs_js"
+  "js_of_ocaml-ppx"
+]
+conflicts: ["ocaml-option-bytecode-only"]
+build: [
+  ["dune" "subst"] {dev}
+  [
+    "dune"
+    "build"
+    # cannot use -p while changing the root directory, so expand -p, while
+    # changing the root
+    "--root" "asllib" "--ignore-promoted-rules" "--no-config" "--profile"
+    "release" "--always-show-command-line" "--promote-install-files"
+    "--require-dune-project-file" "--default-target" "@install"
+    "--only-packages"
+    name
+    "-j"
+    jobs
+    "@install"
+    "@runtest" {with-test & os != "win32"}
+    "@doc" {with-doc}
+  ]
+]
+install: [
+  ["sh" "-c" "cd asllib && exec \"$@\"" "sh"
+   "dune" "install" "-p" name "--prefix=%{prefix}%"]
+]
+dev-repo: "git+https://github.com/herd/herdtools7.git"
+url {
+  src: "https://github.com/herd/herdtools7/archive/refs/tags/ASLRefEAC3.tar.gz"
+  checksum: "sha256=5c15c857a848b74a08d20fc90e61ea3ffa69bfde9d15039b97f3732cb7579ddf"
+}
